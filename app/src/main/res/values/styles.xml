@@ -1,0 +1,61 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Activity.Customer</item>
+        <item name="android:configChanges">orientation|keyboard|screenSize</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <!--设置全局activity 过渡动画-->
+    <style name="Animation.Activity.Customer" parent="@android:style/Animation.Activity">
+        <!-- 进入一个新的Activity的时候，A->B B进入动画 -->BottomDialogTransparentStyle
+        <item name="android:activityOpenEnterAnimation">@anim/common_activity_start_slide_in</item>
+        <!-- 进入一个新的Activity的时候，A->B A退出动画 -->
+        <item name="android:activityOpenExitAnimation">@anim/common_activity_start_slide_out</item>
+        <!-- 退出一个Activity的时候，B返回到A A进入动画 -->
+        <item name="android:activityCloseEnterAnimation">@anim/common_activity_finish_slide_in
+        </item>
+        <!-- 退出一个Activity的时候，B返回到A B退出动画 -->
+        <item name="android:activityCloseExitAnimation">@anim/common_activity_finish_slide_out
+        </item>
+    </style>
+
+    <!-- 透明底部弹窗（添加位移与透明度动画）-->
+    <style name="BottomDialogTransparentStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <!--<item name="android:windowAnimationStyle">@style/BottomAlertDialogAnimation</item>-->
+    </style>
+
+    <style name="ToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <!-- 溢出菜单的文字的颜色 -->
+        <item name="android:textColor">@android:color/white</item>
+
+    </style>
+
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>  <!--把该属性改为false即可使menu位置位于toolbar之下-->
+    </style>
+
+    <!--透明Activity主题-->
+    <style name="TransparentActivityStyle" parent="AppTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/selector_menu_label_tv_bg</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>

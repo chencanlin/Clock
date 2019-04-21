@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2D1952</color>
+    <color name="colorPrimaryDark">#2D1952</color>
+    <!--<color name="colorAccent">#D81B60</color>-->
+    <color name="colorAccent">#116EB7</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="gradientSide">#2D1952</color>
+    <color name="gradientBottom">#1E3468</color>
+    <color name="unSelectGray">#7F789A</color>
+    <color name="floatingLabelBg">#2C2D30</color>
+    <color name="alarmUnselected">#7F789A</color>
+    <color name="blue_stroke">#666EB7</color>
+    <color name="methodGray">#A7A7A7</color>
+    <color name="methodDarkGray">#40888888</color>
+    <color name="itemBg">#223066</color>
+
+    <color name="colorLine">#D8D8D8</color>
+    <color name="colorSaveOne">#116EB7</color>
+    <color name="colorSaveTwo">#2D1A53</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="common_mask_bg_color">#4CAF50</color>
+
+    <color name="alarm_dialog_bg">#193061</color>
+    <color name="dialog_common_window_bg">#96000000</color>
+    <color name="alarm_dialog_determine_text_color">#ff06a6f3</color>
+    <color name="empty_recyclerview_text_color">#4dffffff</color> <!--30% white-->
+    <color name="black">#ff000000</color>
+    <color name="green">#149DEE</color>
+    <color name="gray">#77000000</color>
+    <color name="grayInner">#11000000</color>
+</resources>

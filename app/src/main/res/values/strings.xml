@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">clock</string>
+    <!--MainActivity-->
+    <string name="alarm">Alarm</string>
+    <string name="clock">Clock</string>
+    <string name="timer">Timer</string>
+    <string name="stopwatch">Stopwatch</string>
+    <string name="main_exit">再按一次返回键退出</string>
+
+    <!--MenuActivity-->
+    <string name="app_desc">My Clock V1.0.6\nSupported by:\nmyclock@outlook.com</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="feedback">Feedback</string>
+    <string name="screen_saver">Screen saver</string>
+    <string name="night_mode">Night mode</string>
+    <string name="settings">Settings</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="about_us">About us</string>
+
+    <!--StopwatchFragment-->
+    <string name="stopwatch_minute_second">%1$s:%2$s</string>
+    <string name="stopwatch_interval">+%1$s:%2$s.%3$s</string>
+    <string name="stopwatch_duration">%1$s:%2$s.%3$s</string>
+
+    <string name="snackbar_item_deleted">%1$s deleted</string>
+    <string name="snackbar_undo_item_deleted">Undo</string>
+    <string name="alarm_set_for">Alarm set for %1$s from now.</string>
+    <string name="day_hour_and_minute">1 day, 1 hour, and 1 minute</string>
+    <string name="days_hour_and_minute">%1$d days, 1 hour, and 1 minute</string>
+    <string name="days_hours_and_minute">%1$d days, %2$d hours, and 1 minute</string>
+    <string name="days_hour_and_minutes">%1$d days, 1 hours, and %3$d minutes</string>
+    <string name="days_hours_and_minutes">%1$d days, %2$d hours, and %3$d minutes</string>
+    <string name="day_hours_and_minute">1 day, %2$d hours, and 1 minute</string>
+    <string name="day_hours_and_minutes">1 day, %2$d hours, and %3$d minutes</string>
+    <string name="day_hour_and_minutes">1 day, 1 hour, and %3$d minutes</string>
+    <string name="day_and_hour">1 day and 1 hour</string>
+    <string name="days_and_hour">%1$d days and 1 hour</string>
+    <string name="day_and_hours">1 day and %2$d hours</string>
+    <string name="days_and_hours">%1$d days and %2$d hours</string>
+    <string name="day_and_minute">1 day and 1 minute</string>
+    <string name="days_and_minute">%1$d days and 1 minute</string>
+    <string name="day_and_minutes">1 day and %3$d minutes</string>
+    <string name="days_and_minutes">%1$d days and %3$d minutes</string>
+    <string name="hour_and_minute">1 hour and 1 minute</string>
+    <string name="hour_and_minutes">1 hour and %3$d minutes</string>
+    <string name="hours_and_minute">%2$d hours and 1 minute</string>
+    <string name="hours_and_minutes">%2$d hours and %3$d minutes</string>
+    <string name="day">1 day</string>
+    <string name="days">%1$d days</string>
+    <string name="hour">1 hour</string>
+    <string name="hours">%2$d hours</string>
+    <string name="minute">1 minute</string>
+    <string name="minutes">%3$d minutes</string>
+    <string name="less_than_one_minute">less than 1 minute</string>
+    <string name="abbrev_days_hours_and_minutes">%1$dd %2$dh %3$dm</string>
+    <string name="abbrev_days_and_hours">%1$dd %2$dh</string>
+    <string name="abbrev_days_and_minutes">%1$dd %3$dm</string>
+    <string name="abbrev_hours_and_minutes">%2$dh %3$dm</string>
+    <string name="abbrev_days">%1$dd</string>
+    <string name="abbrev_hours">%2$dh</string>
+    <string name="abbrev_minutes">%3$dm</string>
+    <string name="abbrev_less_than_one_minute">&lt;1m</string>
+
+    <string name="title_snoozing_until">Snoozing until %1$s</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="snooze">Snooze</string>
+    <string name="dismiss_now">Dismiss now</string>
+    <string name="upcoming_alarm">Upcoming alarm</string>
+    <string name="upcoming_alarm_dismissed">%1$s alarm dismissed.</string>
+    <string name="alarm_auto_silenced_text">You missed your alarm.</string>
+    <string name="missed_alarm">Missed alarm</string>
+</resources>

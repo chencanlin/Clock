@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        release {
+            keyAlias 'signkeystore'
+            keyPassword 'android'
+            storeFile file('sign.jks')
+            storePassword 'android'
+        }
+    }
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.adups.clock"
+        minSdkVersion 17
+        targetSdkVersion 28
+        multiDexEnabled true
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [eventBusIndex: 'com.adups.clock.message.MyEventBusIndex']
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:design:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation('com.squareup.picasso:picasso:2.71828') {
+        exclude group: "com.android.support"
+    }
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.1.1'
+    implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
+    implementation "com.airbnb.android:lottie:2.7.0"
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45'
+    implementation 'cn.carbswang.android:NumberPickerView:1.1.1'
+    compileOnly 'com.google.auto.value:auto-value:1.5.2'
+    annotationProcessor 'com.google.auto.value:auto-value:1.5.2'
+}

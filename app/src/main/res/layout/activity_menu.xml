@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="12dp"
+        android:paddingStart="@dimen/common_left_padding"
+        android:paddingLeft="@dimen/common_left_padding"
+        android:paddingEnd="@dimen/common_right_padding"
+        android:paddingRight="@dimen/common_right_padding"
+        android:text="@string/app_desc"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"/>
+
+    <include layout="@layout/view_split"/>
+
+    <TextView
+        android:id="@+id/tv_rate_us"
+        style="@style/menu_common_text_style"
+        android:text="@string/rate_us"/>
+
+    <TextView
+        android:id="@+id/tv_feedback"
+        style="@style/menu_common_text_style"
+        android:text="@string/feedback"/>
+
+    <include layout="@layout/view_split"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ToggleButton
+            android:id="@+id/tb_screen_saver"
+            style="@style/common_toggle_button_style"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/common_right_padding"
+            android:layout_marginRight="@dimen/common_right_padding"/>
+
+        <TextView
+            android:id="@+id/tv_screen_saver"
+            style="@style/menu_common_text_style"
+            android:layout_toStartOf="@+id/tb_screen_saver"
+            android:layout_toLeftOf="@+id/tb_screen_saver"
+            android:text="@string/screen_saver"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ToggleButton
+            android:id="@+id/tb_night_mode"
+            style="@style/common_toggle_button_style"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/common_right_padding"
+            android:layout_marginRight="@dimen/common_right_padding"/>
+
+        <TextView
+            android:id="@+id/tv_night_mode"
+            style="@style/menu_common_text_style"
+            android:layout_toStartOf="@+id/tb_night_mode"
+            android:layout_toLeftOf="@+id/tb_night_mode"
+            android:text="@string/night_mode"
+            />
+
+    </RelativeLayout>
+
+    <include layout="@layout/view_split"/>
+
+    <TextView
+        android:id="@+id/tv_settings"
+        style="@style/menu_common_text_style"
+        android:text="@string/settings"/>
+
+    <TextView
+        android:id="@+id/tv_privacy_policy"
+        style="@style/menu_common_text_style"
+        android:text="@string/privacy_policy"/>
+
+    <TextView
+        android:id="@+id/tv_about_us"
+        style="@style/menu_common_text_style"
+        android:text="@string/about_us"/>
+
+</LinearLayout>

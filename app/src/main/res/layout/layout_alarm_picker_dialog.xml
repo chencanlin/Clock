@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/dialog_common_window_bg"
+    android:id="@+id/main_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/shape_alarm_dialog_bg">
+
+        <TimePicker
+            android:id="@+id/time_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:headerBackground="@drawable/shape_time_picker_head_background_bg"
+            android:numbersBackgroundColor="@color/alarm_dialog_bg"
+            android:numbersInnerTextColor="@color/colorWhite"
+            android:numbersTextColor="@color/colorWhite">
+
+        </TimePicker>
+
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/time_picker"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="15dp"
+            android:text="Save"
+            android:textColor="@color/alarm_dialog_determine_text_color"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/time_picker"
+            android:layout_marginEnd="28dp"
+            android:layout_marginRight="28dp"
+            android:layout_marginBottom="15dp"
+            android:layout_toStartOf="@+id/tv_save"
+            android:layout_toLeftOf="@+id/tv_save"
+            android:text="Cancel"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp"
+    android:paddingBottom="17dp">
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="13:00"
+        android:textColor="@color/colorWhite"
+        android:textSize="43sp" />
+
+    <TextView
+        android:id="@+id/tv_time_system"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="9dp"
+        android:layout_toRightOf="@+id/tv_time"
+        android:text="PM"
+        android:textColor="@color/colorWhite"
+        android:textSize="15sp" />
+
+
+    <TextView
+        android:id="@+id/tv_alarm_repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_time"
+        android:layout_alignLeft="@+id/tv_time"
+        android:layout_marginTop="10dp"
+        android:text="Monday"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp" />
+
+    <ToggleButton
+        android:id="@+id/tb_enable"
+        style="@style/common_toggle_button_style"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/common_right_padding"
+        android:layout_marginRight="@dimen/common_right_padding" />
+
+    <TextView
+        android:id="@+id/tv_ringtone_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tv_alarm_repeat"
+        android:layout_toStartOf="@+id/tb_enable"
+        android:layout_toLeftOf="@+id/tb_enable"
+        android:text="魔鬼铃声"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp" />
+</RelativeLayout>
