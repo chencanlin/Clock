@@ -32,4 +32,6 @@
     <color name="green">#149DEE</color>
     <color name="gray">#77000000</color>
     <color name="grayInner">#11000000</color>
+    <color name="clock_second_hand_color">#ff00ffff</color>
+    <color name="alpha60white">#99ffffff</color>
 </resources>

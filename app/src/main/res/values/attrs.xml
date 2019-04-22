@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="AlarmClockView">
+    <declare-styleable name="AdupsClockView">
+        <!--时钟模式-->
+        <attr name="adupsClockMode">
+            <enum name="mode_clock" value="0"/>
+            <enum name="mode_digital" value="1"/>
+        </attr>
         <!--外圆颜色-->
         <attr name="outerCircleColor" format="reference|color" />
         <!--内圆颜色-->
@@ -20,6 +25,8 @@
         <attr name="dateValueColor" format="reference|color" />
         <!--是否显示时钟下实时时间文本-->
         <attr name="isShowTime" format="boolean" />
+        <!--是否显示时钟下选中的点-->
+        <attr name="isShowDot" format="boolean" />
         <!--时钟占整体控件的大小比例-->
         <attr name="proportion" format="float" />
         <!--是否设置为夜间模式-->

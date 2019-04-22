@@ -21,6 +21,8 @@ package com.adups.clock.ui.alarm.utils;
 
 import android.content.Context;
 
+import com.adups.clock.R;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -31,7 +33,45 @@ import static android.text.format.DateFormat.getTimeFormat;
  */
 public final class TimeFormatUtils {
 
-    private TimeFormatUtils() {}
+    public static String getMonthAbbreviationText(Context context, int month) {
+        String[] monthAbbreviationArray = context.getResources().getStringArray(R.array.month_abbreviation_text_array);
+        if (month > 12 || month <= 0) {
+            return monthAbbreviationArray[0];
+        } else {
+            return monthAbbreviationArray[month - 1];
+        }
+    }
+
+    public static String getMonthText(Context context, int month) {
+        String[] monthArray = context.getResources().getStringArray(R.array.month_text_array);
+        if (month > 12 || month <= 0) {
+            return monthArray[0];
+        } else {
+            return monthArray[month - 1];
+        }
+    }
+
+    public static String getDayAbbreviationText(Context context, int day) {
+        String[] dayAbbreviationArray = context.getResources().getStringArray(R.array.day_abbreviation_text_array);
+        if (day > 7 || day <= 0) {
+            return dayAbbreviationArray[0];
+        } else {
+            return dayAbbreviationArray[day - 1];
+        }
+    }
+
+    public static String getDayText(Context context, int day) {
+        String[] dayArray = context.getResources().getStringArray(R.array.day_text_array);
+        if (day > 7 || day <= 0) {
+            return dayArray[0];
+        } else {
+            return dayArray[day - 1];
+        }
+    }
+
+
+    private TimeFormatUtils() {
+    }
 
     public static String formatTime(Context context, long millis) {
         return getTimeFormat(context).format(new Date(millis));

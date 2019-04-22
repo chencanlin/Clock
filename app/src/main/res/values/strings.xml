@@ -69,4 +69,9 @@
     <string name="upcoming_alarm_dismissed">%1$s alarm dismissed.</string>
     <string name="alarm_auto_silenced_text">You missed your alarm.</string>
     <string name="missed_alarm">Missed alarm</string>
+    
+    <!--ClockFragment-->
+    <string name="clock_date_abbreviation_text">Local time:%1$s %2$s %3$s</string>
+    <string name="clock_time_text">%1$s:%2$s:%3$s</string>
+    <string name="clock_date_text">%1$s %2$s</string>
 </resources>

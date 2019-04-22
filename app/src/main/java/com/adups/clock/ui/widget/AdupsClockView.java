@@ -2,9 +2,11 @@ package com.adups.clock.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,10 +15,17 @@ import android.view.View;
 
 import com.adups.clock.R;
 import com.adups.clock.listener.TimeChangeListener;
+import com.adups.clock.utils.DensityUtils;
+import com.adups.clock.utils.ImageUtils;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
-public class ClockView extends View {
+public class AdupsClockView extends View {
+
+    public static final int MODE_DIGITAL = 1;
+    public static final int MODE_CLOCK = 0;
 
     /**
      * 秒针颜色
@@ -50,6 +59,14 @@ public class ClockView extends View {
      * 时钟最外层圆半径
      */
     private int mOuterRadius;
+    /*
+     * 每15分钟时刻圆半径
+     * */
+    private int mBigOvalRadius;
+    /*
+     * 每5分钟时刻圆半径
+     * */
+    private int mSmallOvalRadius;
     /**
      * 时钟圆心x
      */
@@ -99,7 +116,7 @@ public class ClockView extends View {
      * 时钟上刻度值的高度
      */
     private int mScaleValueHei;
-    private String[] arr = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+    private String[] arr = getResources().getStringArray(R.array.day_abbreviation_text_array);
     /**
      * 现在的时间天
      */
@@ -123,7 +140,7 @@ public class ClockView extends View {
     /**
      * 真实的周几
      */
-    private String mWeekStr;
+    private String mWeekAbbrStr;
     /**
      * 时间监听
      */
@@ -151,16 +168,22 @@ public class ClockView extends View {
         }
     };
     private int mApm;
+    private Bitmap mClockBg;
+    private Rect mSrcRect;
+    private Rect mDstRect;
+    private int mTickMarkRadius;
+    private int mClockMode;
+    private DecimalFormat mFormat = new DecimalFormat("00");
 
-    public ClockView(Context context) {
+    public AdupsClockView(Context context) {
         this(context, null);
     }
 
-    public ClockView(Context context, @Nullable AttributeSet attrs) {
+    public AdupsClockView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ClockView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public AdupsClockView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context, attrs);
     }
@@ -168,19 +191,22 @@ public class ClockView extends View {
     private void initView(Context context, AttributeSet attrs) {
         this.context = context;
         this.attrs = attrs;
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AlarmClockView);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AdupsClockView);
         if (array != null) {
-            mOuterCircleColor = array.getColor(R.styleable.AlarmClockView_outerCircleColor, getResources().getColor(R.color.gray));
-            mInnerCircleColor = array.getColor(R.styleable.AlarmClockView_innerCircleColor, getResources().getColor(R.color.grayInner));
-            mSecondHandColor = array.getColor(R.styleable.AlarmClockView_secondHandColor, getResources().getColor(R.color.green));
-            mMinuteHandColor = array.getColor(R.styleable.AlarmClockView_minuteHandColor, getResources().getColor(R.color.black));
-            mHourHandColor = array.getColor(R.styleable.AlarmClockView_hourHandColor, getResources().getColor(R.color.black));
-            mMinuteScaleColor = array.getColor(R.styleable.AlarmClockView_minuteScaleColor, getResources().getColor(R.color.black));
-            mPointScaleColor = array.getColor(R.styleable.AlarmClockView_scaleColor, getResources().getColor(R.color.black));
-            mDateValueColor = array.getColor(R.styleable.AlarmClockView_dateValueColor, getResources().getColor(R.color.black));
-            mIsShowTime = array.getBoolean(R.styleable.AlarmClockView_isShowTime, true);
-            mProportion = array.getFloat(R.styleable.AlarmClockView_proportion, (float) 0.75);
-            mIsNight = array.getBoolean(R.styleable.AlarmClockView_night, false);
+            mClockMode = array.getInt(R.styleable.AdupsClockView_adupsClockMode, MODE_CLOCK);
+            mOuterCircleColor = array.getColor(R.styleable.AdupsClockView_outerCircleColor, getResources().getColor(R.color.gray));
+            mInnerCircleColor = array.getColor(R.styleable.AdupsClockView_innerCircleColor, getResources().getColor(R.color.grayInner));
+            mSecondHandColor = array.getColor(R.styleable.AdupsClockView_secondHandColor, getResources().getColor(R.color.green));
+            mMinuteHandColor = array.getColor(R.styleable.AdupsClockView_minuteHandColor, getResources().getColor(R.color.black));
+            mHourHandColor = array.getColor(R.styleable.AdupsClockView_hourHandColor, getResources().getColor(R.color.black));
+            mMinuteScaleColor = array.getColor(R.styleable.AdupsClockView_minuteScaleColor, getResources().getColor(R.color.black));
+            mPointScaleColor = array.getColor(R.styleable.AdupsClockView_scaleColor, getResources().getColor(R.color.black));
+            mDateValueColor = array.getColor(R.styleable.AdupsClockView_dateValueColor, getResources().getColor(R.color.black));
+            mIsShowTime = array.getBoolean(R.styleable.AdupsClockView_isShowTime, true);
+            mProportion = array.getFloat(R.styleable.AdupsClockView_proportion, (float) 0.75);
+            mIsNight = array.getBoolean(R.styleable.AdupsClockView_night, false);
+            mBigOvalRadius = 10;
+            mSmallOvalRadius = 5;
             if (mProportion > 1 || mProportion < 0) {
                 mProportion = (float) 0.75;
             }
@@ -201,8 +227,9 @@ public class ClockView extends View {
         mClockWid = (int) (w * mProportion);
         mOuterRadius = mClockWid / 2;
         mInnerRadius = mOuterRadius - mSpace;
+        mTickMarkRadius = mOuterRadius - 120;
         mCenterX = w / 2;
-        mCenterY = mCenterX;
+        mCenterY = mClockWid / 2;
     }
 
     @Override
@@ -211,7 +238,8 @@ public class ClockView extends View {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int modeHei = MeasureSpec.getMode(heightMeasureSpec);
         if (modeHei == MeasureSpec.UNSPECIFIED || modeHei == MeasureSpec.AT_MOST) {
-            setMeasuredDimension(width, width);
+            getBitmap();
+            setMeasuredDimension(width, (int) (width * mProportion));
         }
     }
 
@@ -220,27 +248,63 @@ public class ClockView extends View {
         super.onDraw(canvas);
         //设置整体控件的背景为白色背景
         mPaint.setColor(Color.WHITE);
-        canvas.drawRect(0, 0, mWid, mHei, mPaint);
+//        canvas.drawRect(0, 0, mWid, mHei, mPaint);
 
-        //画外层圆
-        drawOuterCircle(canvas);
+        // 画表盘背景
+        getBitmap();
+        canvas.drawBitmap(mClockBg, mSrcRect, mDstRect, mPaint);
 
-        //画内层圆
-        drawInnerCircle(canvas);
-
-        //画刻度
-        drawTickMark(canvas);
-
-        //画刻度值
-        drawScaleValue(canvas);
-
-        //画针
-        drawHand(canvas);
-
-        //画现在时间显示
-        if (mIsShowTime) {
-            drawCurrentTime(canvas);
+        if (mClockMode == MODE_CLOCK) {
+            //画外层圆
+//        drawOuterCircle(canvas);
+            //画内层圆
+//        drawInnerCircle(canvas);
+            //画刻度
+            drawTickMark(canvas);
+            //画刻度值
+//        drawScaleValue(canvas);
+            //画针
+            drawHand(canvas);
+        } else {
+            // 画钟表框内时间
+            drawClockDate(canvas);
         }
+        /*if (mIsShowTime) {
+            //画现在时间显示
+            drawCurrentTime(canvas);
+        }*/
+    }
+
+    private void drawClockDate(Canvas canvas) {
+        mPaint.setTextSize(DensityUtils.sp2px(getContext(), 33));
+        mPaint.setColor(Color.WHITE);
+        int hour;
+        if (mApm == 0) {
+            hour = mHour;
+        } else {
+            hour = mHour + 12;
+        }
+        String time = getResources().getString(R.string.clock_time_text, mFormat.format(hour), mFormat.format(mMinute), mFormat.format(mSecond));
+        float textLength = mPaint.measureText(time);
+        float baseLineY = mCenterY + Math.abs(mPaint.ascent()) / 2;
+        canvas.drawText(time, mCenterX - textLength / 2, baseLineY, mPaint);
+
+        mPaint.setTextSize(DensityUtils.sp2px(getContext(), 18));
+        mPaint.setColor(getResources().getColor(R.color.alpha60white));
+        String date = getResources().getString(R.string.clock_date_text, getResources().getStringArray(R.array.month_text_array)[mMonth], mFormat.format(mDay));
+        float dateLength = mPaint.measureText(date);
+        canvas.drawText(date, mCenterX - dateLength / 2, baseLineY - DensityUtils.dp2px(getContext(), 50), mPaint);
+        String dayText = getResources().getStringArray(R.array.day_text_array)[mWeek - 1];
+        float dayLength = mPaint.measureText(dayText);
+        canvas.drawText(dayText, mCenterX - dayLength / 2, baseLineY + DensityUtils.dp2px(getContext(), 35), mPaint);
+    }
+
+    private void getBitmap() {
+        if (mClockBg == null) {
+            mClockBg = ImageUtils.getBitmap(R.mipmap.icon_clock_bg, 360, 360);
+        }
+        mSrcRect = new Rect(0, 0, mClockBg.getWidth(), mClockBg.getHeight());
+        mDstRect = new Rect(mCenterX - mClockWid / 2, mCenterY - mClockWid / 2, mCenterX + mClockWid / 2, mCenterY + mClockWid / 2);
     }
 
     /**
@@ -249,23 +313,19 @@ public class ClockView extends View {
      * @param canvas
      */
     private void drawCurrentTime(Canvas canvas) {
+        mDateValueColor = Color.WHITE;
+        mPaint.reset();
         mPaint.setColor(mDateValueColor);
         mPaint.setAntiAlias(true);
         mPaint.setTextSize(40);
 
         //使当前时间文本正好在时钟底部距离有2 * mSpace的位置
         Paint.FontMetricsInt fm = mPaint.getFontMetricsInt();
-        int baseLineY = mCenterY + mOuterRadius - fm.top + 2 * mSpace;
+        int baseLineY = mCenterY + mOuterRadius - fm.top;
 
-        String apm = "";
-        if (mApm == 0) {
-            apm = "上午";
-        } else {
-            apm = "下午";
-        }
-
-        String time = "" + mYear + "年" + (mMonth + 1) + "月" + mDay + "日" + mWeekStr + apm + mHour + "点" + mMinute + "分" + mSecond + "秒";
-        canvas.drawText(time, mCenterX, baseLineY, mPaint);
+        String time = getResources().getString(R.string.clock_date_abbreviation_text, getResources().getStringArray(R.array.month_abbreviation_text_array)[mMonth], String.valueOf(mDay), mWeekAbbrStr);
+        float timeLength = mPaint.measureText(time);
+        canvas.drawText(time, mWid - timeLength - DensityUtils.dp2px(getContext(), 20), baseLineY, mPaint);
     }
 
     /**
@@ -276,7 +336,8 @@ public class ClockView extends View {
     private void drawHand(Canvas canvas) {
         //画时针
         canvas.save();
-        int hourWid = 16;
+        int hourWid = 13;
+        mHourHandColor = Color.WHITE;
         mPaint.setColor(mHourHandColor);
         mPaint.setStrokeWidth(hourWid);
 
@@ -285,7 +346,7 @@ public class ClockView extends View {
                 //计算时针的偏移量
                 int offset = (int) (((float) mMinute / (float) 60) * (float) 30);
                 canvas.rotate(offset, mCenterX, mCenterY);
-                RectF rectF = new RectF(mCenterX - hourWid / 2, mCenterY - mInnerRadius + mScaleValueHei + 3 * mSpace, mCenterX + hourWid / 2, mCenterY);
+                RectF rectF = new RectF(mCenterX - hourWid / 2, mCenterY - mTickMarkRadius + 96, mCenterX + hourWid / 2, mCenterY);
                 canvas.drawRoundRect(rectF, hourWid / 2, hourWid / 2, mPaint);
                 break;
             } else {
@@ -296,16 +357,17 @@ public class ClockView extends View {
 
         //画分针
         canvas.save();
-        int minuteWid = 10;
+        int minuteWid = 8;
+        mMinuteHandColor = Color.WHITE;
         mPaint.setColor(mMinuteHandColor);
-        mPaint.setStrokeWidth(10);
+        mPaint.setStrokeWidth(8);
 
         for (int i = 0; i < 60; i++) {
             if (i == mMinute) {
                 //计算分针的偏移量
                 int offset = (int) ((float) mSecond / (float) 60 * (float) 6);
                 canvas.rotate(offset, mCenterX, mCenterY);
-                RectF rectF = new RectF(mCenterX - minuteWid / 2, mCenterY - mInnerRadius + 3 * mSpace, mCenterX + minuteWid / 2, mCenterY);
+                RectF rectF = new RectF(mCenterX - minuteWid / 2, mCenterY - mTickMarkRadius + 66, mCenterX + minuteWid / 2, mCenterY);
                 canvas.drawRoundRect(rectF, minuteWid / 2, minuteWid / 2, mPaint);
                 break;
             } else {
@@ -316,14 +378,15 @@ public class ClockView extends View {
 
         //画秒针
         canvas.save();
+        mSecondHandColor = getContext().getResources().getColor(R.color.clock_second_hand_color);
         mPaint.setColor(mSecondHandColor);
-        mPaint.setStrokeWidth(3);
+        mPaint.setStrokeWidth(5);
 
         canvas.drawCircle(mCenterX, mCenterY, mSpace, mPaint);
 
         for (int i = 0; i < 60; i++) {
             if (i == mSecond) {
-                canvas.drawLine(mCenterX, mCenterY + 3 * mSpace, mCenterX, mCenterY - mInnerRadius + mSpace, mPaint);
+                canvas.drawLine(mCenterX, mCenterY - mTickMarkRadius + 56, mCenterX, mCenterY + 30, mPaint);
                 break;
             } else {
                 canvas.rotate(6, mCenterX, mCenterY);
@@ -400,22 +463,25 @@ public class ClockView extends View {
         canvas.save();
 
         for (int i = 0; i < 60; i++) {
-            if (i % 5 == 0) {
+            if (i % 15 == 0) {
+                mMinuteScaleColor = Color.WHITE;
+                mPaint.setColor(mMinuteScaleColor);
+                mPaint.setStyle(Paint.Style.FILL);
+                mPaint.setStrokeWidth(20);
+                mPaint.setAntiAlias(true);
+                mPaint.setTextAlign(Paint.Align.CENTER);
+                canvas.drawOval(new RectF(mCenterX - mBigOvalRadius, mCenterY - mTickMarkRadius, mCenterX + mBigOvalRadius, mCenterY - mTickMarkRadius + mBigOvalRadius * 2), mPaint);
+//                canvas.drawLine(mCenterX, mSpace * 2 + mCenterY - mOuterRadius, mCenterX, mSpace * 3 + mCenterY - mOuterRadius, mPaint);
+            } else if (i % 5 == 0) {
+                mPointScaleColor = Color.WHITE;
                 mPaint.setColor(mPointScaleColor);
                 mPaint.setStyle(Paint.Style.FILL);
                 mPaint.setStrokeWidth(5);
                 mPaint.setAntiAlias(true);
                 mPaint.setTextAlign(Paint.Align.CENTER);
-                mPaint.setTextSize(30);
 
-                canvas.drawLine(mCenterX, mSpace * 2 + mCenterY - mOuterRadius, mCenterX, mSpace * 4 + mCenterY - mOuterRadius, mPaint);
-            } else {
-                mPaint.setColor(mMinuteScaleColor);
-                mPaint.setStyle(Paint.Style.FILL);
-                mPaint.setStrokeWidth(2);
-                mPaint.setAntiAlias(true);
-
-                canvas.drawLine(mCenterX, mSpace * 2 + mCenterY - mOuterRadius, mCenterX, mSpace * 3 + mCenterY - mOuterRadius, mPaint);
+                canvas.drawOval(new RectF(mCenterX - mSmallOvalRadius, mCenterY - mTickMarkRadius, mCenterX + mSmallOvalRadius, mCenterY - mTickMarkRadius + mSmallOvalRadius * 2), mPaint);
+//                canvas.drawLine(mCenterX, mSpace * 2 + mCenterY - mOuterRadius, mCenterX, mSpace * 4 + mCenterY - mOuterRadius, mPaint);
             }
 
             canvas.rotate(6, mCenterX, mCenterY);
@@ -467,6 +533,7 @@ public class ClockView extends View {
      */
     public void initCurrentTime() {
         Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         resetTime(mCalendar);
         invalidate();
     }
@@ -489,9 +556,7 @@ public class ClockView extends View {
 //        apm=0 表示上午，apm=1表示下午。
         mApm = calendar.get(Calendar.AM_PM);
         //1.数组下标从0开始；2.老外的第一天是从星期日开始的
-        mWeekStr = arr[calendar.get(calendar.DAY_OF_WEEK) - 1];
-
-        System.out.println("现在时间：小时：" + mHour + ",分钟：" + mMinute + ",秒：" + mSecond);
+        mWeekAbbrStr = arr[calendar.get(calendar.DAY_OF_WEEK) - 1];
 
         if (listener != null) {
             listener.onTimeChange(calendar);
@@ -543,18 +608,18 @@ public class ClockView extends View {
             setNightColor();
         } else {
             //这里没有night属性
-            TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AlarmClockView);
+            TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.AdupsClockView);
             if (array != null) {
-                mOuterCircleColor = array.getColor(R.styleable.AlarmClockView_outerCircleColor, getResources().getColor(R.color.gray));
-                mInnerCircleColor = array.getColor(R.styleable.AlarmClockView_innerCircleColor, getResources().getColor(R.color.grayInner));
-                mSecondHandColor = array.getColor(R.styleable.AlarmClockView_secondHandColor, getResources().getColor(R.color.green));
-                mMinuteHandColor = array.getColor(R.styleable.AlarmClockView_minuteHandColor, getResources().getColor(R.color.black));
-                mHourHandColor = array.getColor(R.styleable.AlarmClockView_hourHandColor, getResources().getColor(R.color.black));
-                mMinuteScaleColor = array.getColor(R.styleable.AlarmClockView_minuteScaleColor, getResources().getColor(R.color.black));
-                mPointScaleColor = array.getColor(R.styleable.AlarmClockView_scaleColor, getResources().getColor(R.color.black));
-                mDateValueColor = array.getColor(R.styleable.AlarmClockView_dateValueColor, getResources().getColor(R.color.black));
-                mIsShowTime = array.getBoolean(R.styleable.AlarmClockView_isShowTime, true);
-                mProportion = array.getFloat(R.styleable.AlarmClockView_proportion, (float) 0.75);
+                mOuterCircleColor = array.getColor(R.styleable.AdupsClockView_outerCircleColor, getResources().getColor(R.color.gray));
+                mInnerCircleColor = array.getColor(R.styleable.AdupsClockView_innerCircleColor, getResources().getColor(R.color.grayInner));
+                mSecondHandColor = array.getColor(R.styleable.AdupsClockView_secondHandColor, getResources().getColor(R.color.green));
+                mMinuteHandColor = array.getColor(R.styleable.AdupsClockView_minuteHandColor, getResources().getColor(R.color.black));
+                mHourHandColor = array.getColor(R.styleable.AdupsClockView_hourHandColor, getResources().getColor(R.color.black));
+                mMinuteScaleColor = array.getColor(R.styleable.AdupsClockView_minuteScaleColor, getResources().getColor(R.color.black));
+                mPointScaleColor = array.getColor(R.styleable.AdupsClockView_scaleColor, getResources().getColor(R.color.black));
+                mDateValueColor = array.getColor(R.styleable.AdupsClockView_dateValueColor, getResources().getColor(R.color.black));
+                mIsShowTime = array.getBoolean(R.styleable.AdupsClockView_isShowTime, true);
+                mProportion = array.getFloat(R.styleable.AdupsClockView_proportion, (float) 0.75);
                 if (mProportion > 1 || mProportion < 0) {
                     mProportion = (float) 0.75;
                 }
@@ -590,5 +655,12 @@ public class ClockView extends View {
         stop();
         resetTime(calendar);
         invalidate();
+    }
+
+    /*
+     * 设置时钟模式
+     * */
+    public void setClockMode(int clockMode) {
+        mClockMode = clockMode;
     }
 }
